@@ -267,6 +267,24 @@ public actor IMAPServer {
 		return try await executeCommand(command)
 	}
 	
+	/**
+	 Create a new mailbox
+	 
+	 This method creates a new mailbox with the specified name. The mailbox name
+	 should follow IMAP naming conventions for the server.
+	 
+	 - Parameter mailboxName: The name of the mailbox to create
+	 - Throws:
+	   - `IMAPError.invalidArgument` if the mailbox name is empty
+	   - `IMAPError.commandFailed` if the server cannot create the mailbox
+	   - `IMAPError.connectionFailed` if not connected
+	 - Note: Logs mailbox creation at debug level
+	 */
+	public func createMailbox(_ mailboxName: String) async throws {
+		let command = CreateCommand(mailboxName: mailboxName)
+		try await executeCommand(command)
+	}
+	
 	/** 
 	 Close the currently selected mailbox
 	 
