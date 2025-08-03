@@ -285,6 +285,25 @@ public actor IMAPServer {
 		try await executeCommand(command)
 	}
 	
+	/**
+	 Delete an existing mailbox
+	 
+	 This method permanently deletes the specified mailbox. The mailbox must not be
+	 currently selected and should be empty or the server may refuse the operation.
+	 
+	 - Parameter mailboxName: The name of the mailbox to delete
+	 - Throws:
+	   - `IMAPError.invalidArgument` if the mailbox name is empty
+	   - `IMAPError.commandFailed` if the server cannot delete the mailbox
+	   - `IMAPError.connectionFailed` if not connected
+	 - Note: Logs mailbox deletion at debug level
+	 - Warning: This operation is irreversible. All messages in the mailbox will be lost.
+	 */
+	public func deleteMailbox(_ mailboxName: String) async throws {
+		let command = DeleteCommand(mailboxName: mailboxName)
+		try await executeCommand(command)
+	}
+	
 	/** 
 	 Close the currently selected mailbox
 	 
